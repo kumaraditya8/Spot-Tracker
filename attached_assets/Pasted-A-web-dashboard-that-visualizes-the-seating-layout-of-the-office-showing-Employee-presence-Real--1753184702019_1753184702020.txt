@@ -1,0 +1,231 @@
+A web dashboard that visualizes the seating layout of the office, showing:
+
+Employee presence
+
+Real-time activity status (Present, Inactive, Remote, Absent, Sleeping)
+
+MAC address/device tracking
+
+Heartbeat pings
+
+Admin and search/filter panel
+
+🧠 SYSTEM ARCHITECTURE
+Frontend: React + TailwindCSS
+Backend: Node.js + Express (optional) or Firebase (for real-time updates)
+Database: PostgreSQL / Firebase Firestore
+MAC Detection / Device Tracking: Native client script or Electron wrapper
+Real-time communication: WebSocket / Firebase Realtime
+Deployment: Vercel (Frontend) + Railway / Firebase
+
+🌐 COMPONENT FLOW DIAGRAM
+plaintext
+Copy
+Edit
+[Employee Device (Browser)]
+        |
+        |— Ping (MAC + Last Seen + Status) —>
+        |
+  [Tracking Middleware]
+        |
+        |— Store in DB / Firebase
+        |
+  [React Frontend Dashboard]
+        |
+        |— Seat Grid + Tooltip + Filters
+        |
+     [Admin Panel]
+🏗️ FEATURE-WISE BREAKDOWN
+1. 🪑 Office Layout (Seat Map Grid)
+A static JSON or dynamic layout defining:
+
+json
+Copy
+Edit
+[
+  { "id": "A1", "type": "seat", "employee": "Kumar Aditya", "mac": "AA:BB:CC", "location": "Delhi", "project": "Tripo Saints" },
+  { "id": "A2", "type": "empty" },
+  ...
+]
+Rendered via React using Tailwind Grid.
+
+Hover tooltip shows:
+Name, Project, MAC Address, Last Seen, Status.
+
+2. 📡 MAC Address & Device Detection
+Client script (can’t access MAC in browser).
+So, options:
+
+Electron App or Desktop Client (to detect MAC via Node.js or native OS calls).
+
+bash
+Copy
+Edit
+# Node.js MAC detection
+const { networkInterfaces } = require("os");
+const mac = Object.values(networkInterfaces())[0][0].mac;
+If using browser only:
+
+Use userAgent + IP fingerprinting (less accurate).
+
+Or allow user to manually register MAC once (stored in DB).
+
+3. 💓 Real-time Heartbeat Detection (Presence Tracking)
+Each client (browser or Electron) sends a heartbeat ping:
+
+ts
+Copy
+Edit
+setInterval(() => {
+  fetch("/api/ping", {
+    method: "POST",
+    body: JSON.stringify({
+      mac: "AA:BB:CC:DD:EE:FF",
+      lastSeen: new Date().toISOString(),
+      status: getUserActivity(),  // e.g., present, idle, remote, sleep
+    })
+  });
+}, 30_000);
+Status detection logic (browser-based):
+
+js
+Copy
+Edit
+let lastActivity = Date.now();
+document.onmousemove = () => lastActivity = Date.now();
+
+function getUserActivity() {
+  const diff = Date.now() - lastActivity;
+  if (diff < 60_000) return "present";
+  if (diff < 5 * 60_000) return "inactive";
+  if (diff > 15 * 60_000) return "sleeping";
+  return "absent";
+}
+Optional:
+
+Detect remote by checking geolocation/IP.
+
+Detect sleep mode via inactivity + native system APIs (Electron only).
+
+4. 🧠 Backend (Optional or Firebase)
+Option 1: Firebase Firestore
+Realtime sync of user data.
+
+Automatically updates React frontend.
+
+Option 2: Node.js + PostgreSQL
+API to record ping:
+
+ts
+Copy
+Edit
+POST /api/ping
+{
+  mac: "xx:xx:xx",
+  lastSeen: "...",
+  status: "present"
+}
+Use express and pg:
+
+ts
+Copy
+Edit
+app.post("/api/ping", async (req, res) => {
+  const { mac, lastSeen, status } = req.body;
+  await db.query("UPDATE employees SET last_seen=$1, status=$2 WHERE mac=$3", [lastSeen, status, mac]);
+});
+5. 📊 React Dashboard (Seat Grid UI)
+Read from static seats.json or dynamic fetch from DB.
+
+Each block:
+
+ts
+Copy
+Edit
+<div className={`seat ${status}`} title={`Name: ${name}\nMAC: ${mac}\nStatus: ${status}`}>
+   <span>{seatId}</span>
+</div>
+Status classes:
+
+ts
+Copy
+Edit
+present → green
+inactive → yellow
+remote → blue
+sleeping → purple
+absent → gray
+6. 🔍 Filters + Search
+Filter dropdown: Status, Project, Location.
+
+Search: by name, MAC, project, or seat ID.
+
+React-controlled input + Array.filter.
+
+7. 🛠️ Admin Panel
+Add/remove employees to seats.
+
+Assign MAC address manually.
+
+Edit location, department, status.
+
+View activity logs.
+
+8. 🔐 Auth (Optional)
+Admin login for seat management.
+
+Firebase Auth or simple JWT auth via Node.js.
+
+🛌 Sleep Detection Logic
+To track “Sleeping” status:
+
+In Browser:
+ts
+Copy
+Edit
+let lastActivity = Date.now();
+["mousemove", "keydown", "click", "scroll"].forEach(e =>
+  document.addEventListener(e, () => lastActivity = Date.now())
+);
+
+setInterval(() => {
+  const diff = Date.now() - lastActivity;
+  let status = "present";
+  if (diff > 10 * 60_000) status = "sleeping";
+  else if (diff > 3 * 60_000) status = "inactive";
+
+  sendStatus(status);
+}, 30_000);
+In System (Electron):
+Use OS-specific idle APIs:
+
+Windows: user32.dll (GetLastInputInfo)
+
+macOS: ioreg + pmset commands
+
+📁 Sample Folder Structure
+bash
+Copy
+Edit
+/spot-sitting-bot
+│
+├── /client (React + Tailwind)
+│   ├── components/
+│   ├── pages/
+│   └── seats.json
+│
+├── /server (Node.js API)
+│   ├── routes/
+│   └── db/
+│
+├── /electron-client (optional)
+│   └── macDetector.ts
+│
+└── README.md
+✅ Status Table Summary
+Status	Detection Method	Color
+Present	Activity in <1 min	Green
+Inactive	No activity for 3–10 min	Yellow
+Remote	IP not in office range	Blue
+Sleeping	No activity >10–15 min or idle system	Purple
+Absent	No heartbeat in >30 mins	Gray

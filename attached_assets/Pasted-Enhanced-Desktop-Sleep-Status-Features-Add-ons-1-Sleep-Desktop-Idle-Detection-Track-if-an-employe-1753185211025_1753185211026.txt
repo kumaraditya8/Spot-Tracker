@@ -1,0 +1,76 @@
+Enhanced Desktop/Sleep Status Features (Add-ons)
+1. Sleep/Desktop Idle Detection
+Track if an employee's system has gone to sleep or is idle, and reflect that in the seat dashboard.
+
+Features to implement:
+
+Idle Detection Timer (e.g., mark as “Idle” after 5 mins of no activity).
+
+Sleep Detection (via Electron + Node.js agent or native OS API):
+
+Detect if the desktop/laptop enters sleep mode.
+
+Reflect the seat status as Sleep, Idle, or Inactive.
+
+2. Desktop Agent Integration
+Build a lightweight cross-platform desktop agent (Electron/Node.js + Native APIs) that:
+
+Detects mouse/keyboard activity.
+
+Detects sleep/wake status.
+
+Sends periodic heartbeat (ping) to backend.
+
+Detects system lock/unlock (e.g., when user locks their PC).
+
+Optionally gathers MAC address or unique device fingerprint.
+
+Auto-launches at startup.
+
+3. Status Transitions
+Automatically update seat status on dashboard:
+
+Condition	Status Shown
+No interaction for 5+ minutes	Idle
+System enters sleep	Sleep
+System locked	Away
+User reactivates system	Active
+Device disconnected	Offline
+
+4. Sleep/Awake History Logs
+Track and log each transition with timestamps for analytics.
+
+Useful for productivity insights.
+
+Include in the Recent Activity Feed.
+
+5. Idle Time Analytics (Daily/Weekly)
+Track total idle/sleep time per day.
+
+Visualize with graphs in analytics dashboard.
+
+6. Smart Notifications (Optional)
+Admins get alerts if an employee is idle/sleep for too long during office hours.
+
+Employees get reminders to stay active if idle for extended periods.
+
+✅ Extra Features You Can Add Later:
+🌐 Real-Time Location Mapping
+Map seat occupancy based on live IP/device data (on/offsite detection).
+
+📲 Employee Check-in App
+Push notification if desktop sleeps and mobile check-in not detected.
+
+Dual-device presence check (Desktop + Mobile).
+
+🧠 AI-Based Focus & Productivity Score
+Combine idle/sleep data + active app tracking to show productivity trends.
+
+🧑‍💻 Application Usage Monitor (Optional & Privacy Sensitive)
+Track app names used during work hours (opt-in or admin consent required).
+
+Insights on distractions, work-focus time.
+
+🔌 Power-Off or Shut Down Status Detection
+Detect abrupt shutdowns and reflect as Offline with cause tag.
+

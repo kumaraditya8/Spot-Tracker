@@ -1,0 +1,269 @@
+SPOT – SITTING + BOT
+A Web-Based Smart Office Seat & Employee Activity Tracker
+🌟 Project Vision
+Create a lightweight, interactive, front-end dashboard that visually tracks employee seating, project allocations, and real-time activity status using simulated MAC-based heartbeat pings. It replaces outdated spreadsheets with a smart, responsive UI for HR/Admin teams.
+
+📈 PROJECT DEVELOPMENT FLOW (FULL PIPELINE)
+🔹 PHASE 1: Planning & Structure
+🔸 1. Define Office Layout
+Choose layout format: grid-based (table layout) or mapped floor plan (office blueprint)
+
+Decide layout size: number of tables, number of seats per table
+
+🔸 2. Prepare Static Data Structures (JSON)
+Create and maintain the following files:
+
+employees.json → Name, ID, Role, Team, Seat#, MAC, Project, Email, Status
+
+seats.json → SeatID, table#, occupiedBy (employeeID), availability
+
+status.json → MAC, lastSeen, isSleep, status (active/inactive/remote/absent)
+
+notifications.json → alert logs for inactive/remote cases
+
+🔹 PHASE 2: Core UI Development
+🔸 3. HTML/CSS Base Layout
+Header with App Title: “Spot – Sitting + Bot”
+
+Sidebar with:
+
+Navigation links: Dashboard, Add Employee, Reports, Settings
+
+Filter controls
+
+Main panel: Interactive seat map
+
+Footer (optional): Legend and app version
+
+🔸 4. Responsive Grid Layout for Seat Map
+Each seat as a visual block or seat icon
+
+Grouped by tables (flex/grid system)
+
+Color codes for statuses:
+
+🟢 Green = Active
+
+🟡 Yellow = Inactive
+
+🔴 Red = Absent
+
+🟠 Orange = Remote
+
+⚪️ Gray = Unassigned
+
+🔹 PHASE 3: Core Interactivity
+🔸 5. Hover Tooltip for Seats
+On hover over any seat:
+
+Name
+
+Designation
+
+Team
+
+Project
+
+MAC Address
+
+Status (icon + text)
+
+Last seen (formatted time ago)
+
+🔸 6. Admin Authentication
+Simple login with username: spot, password: 123spot
+
+Use session/localStorage for login status
+
+Redirect unauthenticated users to login screen
+
+🔹 PHASE 4: Dynamic Features & Logic
+🔸 7. Search + Filter Functionality
+Search bar: by name, email, or seat number
+
+Filters:
+
+Team
+
+Job Title
+
+Project
+
+Status (Active, Inactive, Remote, Absent)
+
+Sort by:
+
+Name A-Z
+
+Last seen
+
+Status priority
+
+🔸 8. MAC-Based Heartbeat Simulation
+Simulate ping every 60 seconds (setInterval)
+
+Logic:
+
+If no ping for 3+ minutes → status = "Inactive"
+
+If system isSleep = true → status = "Inactive"
+
+No ping entire day = "Absent"
+
+IP outside office = "Remote" (simulated with isRemote flag)
+
+Update status.json dynamically (front-end simulated)
+
+🔸 9. Update UI Based on Status
+Automatically change color/style of seats
+
+Animate pulse effect on active employees
+
+Dim or outline remote workers
+
+Mark unassigned seats clearly
+
+🔹 PHASE 5: Admin Dashboard Functionalities
+🔸 10. Admin Panel Pages
+Section	Features
+Dashboard	View all tables & seats, hover status, click to open profile
+Add Employee	Form: Name, Email, Job, Team, Seat, MAC, Project
+Manage Tables	Add/remove tables, assign seats
+View Reports	Presence logs, daily activity
+Export Data	Download JSON or CSV
+Notifications	Show alerts (inactive for 2+ hours), click to view details
+
+🔹 PHASE 6: Advanced Features (Optional but Impressive)
+🧩 UI Enhancements
+Light/Dark mode toggle
+
+Smooth hover/click animations
+
+Loading spinner for simulated updates
+
+🗃️ Employee Modal
+On seat click → open modal:
+
+Full profile (name, photo, email)
+
+Role, team, project, seat#
+
+Last 5 activities
+
+🛎️ Notification Center
+Bell icon with count
+
+List of:
+
+Inactive employees > 2 hrs
+
+Missed check-ins (Absent)
+
+Remote status anomalies
+
+Clear notification on action
+
+📊 Reporting & Analytics
+Charts (Bar/Pie using Chart.js) for:
+
+Attendance stats
+
+Remote vs In-office %age
+
+Daily/Weekly/Monthly CSV export
+
+🧭 Mini-Map or Seat Legend
+Mini layout map on bottom right
+
+Legend: color → status mappings
+
+🔐 Keyboard Navigation
+Arrow keys to jump between seats
+
+Enter = open profile
+
+Esc = close modal
+
+🔹 PHASE 7: Simulated Real-Time Sync (Front-End Only)
+Use JS setInterval() to:
+
+Simulate data fetch every 30s from JSON
+
+Update seat status
+
+Trigger notifications
+
+Optional: add fake delay for realism (setTimeout)
+
+🛠️ TECH STACK SUMMARY
+Layer	Tech Used
+Frontend	HTML, CSS, JavaScript
+Framework	TailwindCSS (or Bootstrap), Optional React
+Data Layer	Static JSON files
+Auth Logic	JavaScript session storage
+Real-Time	Simulated with JS timers
+Optional	Chart.js, WebSocket mock, local Electron client (future)
+
+📁 FOLDER STRUCTURE
+plaintext
+Copy
+Edit
+Spot/
+│
+├── index.html
+├── style.css
+├── app.js
+├── /data/
+│   ├── employees.json
+│   ├── seats.json
+│   ├── status.json
+│   └── notifications.json
+├── /assets/
+│   ├── icons/
+│   ├── avatars/
+│   └── logos/
+├── /components/
+│   ├── SeatGrid.js
+│   ├── Tooltip.js
+│   ├── EmployeeModal.js
+│   └── Notifications.js
+├── README.txt
+└── Spot_InternshipProject.zip (final packaged project)
+📑 README.txt CONTENT (for final submission)
+markdown
+Copy
+Edit
+# Spot – Sitting + Bot
+
+## 📌 Overview
+A front-end-only smart seating and activity tracker dashboard designed for internal company use.
+
+## 💡 Features
+- Visual seat layout with interactive hover details
+- Search, filter, and sort employees
+- Admin panel to manage employees and tables
+- Simulated MAC-based heartbeat system
+- Real-time inactive employee alerts
+- Export/Import data (CSV, JSON)
+- Responsive UI with status indicators
+- Optional enhancements: dark mode, profile modals, analytics charts
+
+## 🛠️ Technology Used
+- HTML, CSS, JavaScript
+- TailwindCSS for styling
+- Chart.js (optional)
+- JSON files as data source
+
+## 🚀 Setup Instructions
+1. Extract the `Spot_InternshipProject.zip` file
+2. Open `index.html` in a browser
+3. Login using:
+   - Username: `spot`
+   - Password: `123spot`
+4. Explore all features via the dashboard
+
+## 📁 Folder Structure
+[...same as above...]
+
+## 🧩 Additional Notes
+This project simulates backend logic with static JSON and front-end JavaScript. It’s scalable for a real backend using Node.js + PostgreSQL + WebSocket in the future.

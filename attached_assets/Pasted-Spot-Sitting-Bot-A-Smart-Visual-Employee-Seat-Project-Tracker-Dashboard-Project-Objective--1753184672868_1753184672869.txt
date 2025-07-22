@@ -1,0 +1,234 @@
+Spot – Sitting + Bot
+A Smart Visual Employee Seat & Project Tracker Dashboard
+🧠 Project Objective:
+As organizations like Tripo Saints grow, tracking where employees sit and what project they are working on becomes inefficient via spreadsheets. “Spot” aims to solve this with a visually interactive, browser-based seat and project tracking dashboard that helps admins:
+
+Visualize employee seating
+
+Track employee activity and presence (simulated via MAC ping logic)
+
+Search, filter, and interact with seating and employee data
+
+The app is designed to be lightweight, front-end only, and easy to simulate without any backend server dependency.
+
+🔧 Core Functional Features (MUST HAVE)
+🪑 1. Visual Office Seat Layout
+Represent office floor as a grid or structured layout
+
+Each seat represents one employee or remains unassigned
+
+Seats are color-coded based on status (Active, Inactive, Absent, Remote, etc.)
+
+🖱️ 2. Hover to View Employee Details
+On hovering over any seat, show:
+
+👤 Employee Name
+
+🎯 Current Project
+
+💼 Designation/Job Title
+
+🕒 Last Seen / Status
+
+📶 MAC Address (optional if simulated)
+
+Tooltip / Popup / Hover card must be elevated above all elements (no z-index issues)
+
+🔍 3. Search Functionality
+Search bar to find employees by:
+
+Name
+
+Seat Number
+
+MAC Address
+
+Highlight matched employee’s seat in real-time
+
+🔽 4. Filter & Sort Options
+Filter seats/employees by:
+
+Status: Active, Inactive, Remote, Absent
+
+Department / Team
+
+Job Role
+
+Project Name
+
+Sort by:
+
+Alphabetical
+
+Last Seen Time
+
+Designation
+
+📱 5. Responsive UI Design
+Layout must work on:
+
+Desktop
+
+Tablet
+
+Mobile
+
+Use media queries or frameworks like TailwindCSS or Bootstrap
+
+🖥️ Employee Management (Admin Side)
+Add Employee: Name, Role, Team, Project, MAC Address, Seat Number
+
+Update Employee
+
+Delete Employee
+
+Assign employees to specific seats/tables
+
+View employee reports/activity logs
+
+📊 Real-Time Presence Detection (Simulated via JSON)
+Simulate MAC heartbeat using setInterval() every 60s
+
+Status Rules:
+
+✅ Active → Heartbeat received
+
+🟡 Inactive → No ping for 3+ minutes
+
+🔴 Absent → No login/heartbeat all day
+
+🟠 Remote → Admin-defined, or IP check (simulated)
+
+💤 Sleep → Simulated isSleep:true flag
+
+🔐 Authentication System (Admin Login)
+Simple session-based login:
+
+Username: spot
+
+Password: 123spot
+
+All dashboards are accessible only after login
+
+Logout functionality
+
+📁 Data Handling
+Store data in:
+
+employees.json
+
+seats.json
+
+status.json (with timestamps, isSleep, etc.)
+
+Simulate real-time updates from JSON without backend
+
+Enable data import/export (CSV, JSON) for records
+
+🧮 Admin Dashboard Functionalities
+✅ View and manage tables/seats dynamically
+
+✅ Add/Update/Delete tables and assign employees
+
+✅ Export employee/activity data
+
+✅ View detailed activity logs (last seen, changes)
+
+✅ Filter reports by date, action type, employee
+
+🔔 Real-Time Notifications
+Notification bell in admin panel
+
+If any active/remote employee stays inactive for 2+ hours, send alert:
+
+Tooltip: “Employee inactive since X hrs”
+
+Click → opens employee profile
+
+Notification count shown on the bell icon
+
+🌈 Optional Advanced Features (Bonus for Creativity)
+🎨 UI & Styling Enhancements
+Light/Dark Mode Toggle 🌙☀️
+
+Animated Transitions on seat changes or status updates
+
+Status Legends with color codes
+
+👥 Profile Modals
+On seat click → Open modal card showing:
+
+Full Name
+
+Email
+
+Department
+
+Team
+
+Seat number
+
+MAC
+
+Project Summary
+
+Activity Logs
+
+🧭 Mini-Map or Seat Legend
+Display small legend box or map in corner to explain:
+
+Color codes
+
+Status indicators
+
+🧠 Smart Features
+Auto-detect idle employees
+
+Show “Last Seen Time Ago” in human-readable format
+
+Seat “Pulse Animation” for active users
+
+📈 Analytics Reports
+Daily, Weekly, Monthly employee presence summary
+
+Activity charts (Pie/Bar Graphs using Chart.js or similar)
+
+Export analytics report to PDF/CSV
+
+⚙️ Technology Stack
+Layer	Technology
+Frontend	HTML, CSS, JS
+UI Framework	TailwindCSS / Bootstrap
+Logic Engine	JavaScript / React (optional)
+Data	Static JSON files (simulated)
+Real-Time	Simulated via setInterval() or optionally WebSocket
+Auth	Session or LocalStorage-based login
+
+📦 Final Deliverables
+Fully working HTML/CSS/JS project (ZIP)
+
+All dummy data (JSON files)
+
+README.txt with:
+
+Setup instructions
+
+Technologies used
+
+Folder structure
+
+Summary of features
+
+Screenshots (optional)
+
+✅ Summary Workflow
+Step	Description
+1	Build seat grid layout
+2	Add employee hover details
+3	Implement search and filter
+4	Simulate presence via JSON heartbeat
+5	Build admin panel with login
+6	Add data import/export functionality
+7	Style with responsive, animated UI
+8	Add notifications & real-time alerts
+9	Deliver final code with README.txt
